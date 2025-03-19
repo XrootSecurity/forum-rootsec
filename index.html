@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Uploader</title>
+  <style>
+    /* CSS untuk tema hacker dan responsif */
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #000;
+      color: #0f0;
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      text-shadow: 0 0 5px #0f0;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #0f0;
+      box-shadow: 0 0 10px #0f0;
+      background-color: #111;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      background-color: #222;
+      border: 1px solid #0f0;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #0f0;
+      border: none;
+      color: #000;
+      font-family: 'Courier New', Courier, monospace;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+
+    .form-group button:hover {
+      background-color: #0c0;
+    }
+
+    #gallery {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      border: 1px solid #0f0;
+      padding: 10px;
+      background-color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #0f0;
+    }
+
+    .gallery-item p {
+      margin: 10px 0 0;
+      font-size: 0.9em;
+      color: #0f0;
+      text-align: center;
+    }
+
+    .gallery-item p strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* Penglihatan Random */
+    .views {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.8em;
+      color: #0f0;
+    }
+
+    /* Popup Styling */
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      color: #000;
+      font-weight: bold;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .popup.success {
+      background-color: #0f0;
+    }
+
+    .popup.error {
+      background-color: #f00;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Efek teks terminal */
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .terminal-text {
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hacker Uploader <span class="terminal-text">_</span></h1>
+    <form id="uploadForm">
+      <div class="form-group">
+        <label for="name">Nama Uploader:</label>
+        <input type="text" id="name" placeholder="Masukkan nama Anda" required>
+      </div>
+      <div class="form-group">
+        <label for="date">Tanggal Upload:</label>
+        <input type="date" id="date" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Deskripsi:</label>
+        <textarea id="description" placeholder="Masukkan deskripsi..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="fileInput">Pilih Foto/Video:</label>
+        <input type="file" id="fileInput" accept="image/*, video/*" multiple required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Upload</button>
+      </div>
+    </form>
+    <div id="gallery"></div>
+  </div>
+
+  <!-- Popup untuk pesan sukses/gagal -->
+  <div id="popup" class="popup"></div>
+
+  <script>
+    // Fungsi untuk menampilkan popup
+    function showPopup(message, isSuccess) {
+      const popup = document.getElementById('popup');
+      popup.textContent = message;
+      popup.className = `popup ${isSuccess ? 'success' : 'error'} show`;
+
+      // Sembunyikan popup setelah 3 detik
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
+    }
+
+    // Fungsi untuk menghasilkan angka random antara 1000 dan 100000
+    function getRandomViews() {
+      return Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
+    }
+
+    // Tangani form upload
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+      e.preventDefault(); // Mencegah form submit
+
+      const name = document.getElementById('name').value;
+      const date = document.getElementById('date').value;
+      const description = document.getElementById('description').value;
+      const fileInput = document.getElementById('fileInput');
+      const gallery = document.getElementById('gallery');
+
+      // Validasi input
+      if (!name || !date || !description || fileInput.files.length === 0) {
+        showPopup("Upload gagal: Semua field harus diisi!", false);
+        return;
+      }
+
+      // Tampilkan file yang diunggah
+      for (const file of fileInput.files) {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const fileUrl = event.target.result;
+
+          // Buat elemen untuk menampilkan file
+          const galleryItem = document.createElement('div');
+          galleryItem.classList.add('gallery-item');
+
+          if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = fileUrl;
+            galleryItem.appendChild(img);
+          } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.src = fileUrl;
+            video.controls = true;
+            galleryItem.appendChild(video);
+          }
+
+          // Tambahkan informasi nama, tanggal, dan deskripsi
+          const info = document.createElement('p');
+          info.innerHTML = `<strong>${name}</strong><br>${date}<br>${description}`;
+          galleryItem.appendChild(info);
+
+          // Tambahkan penglihatan random
+          const views = document.createElement('div');
+          views.classList.add('views');
+          views.textContent = `👁️ ${getRandomViews().toLocaleString()} views`;
+          galleryItem.appendChild(views);
+
+          // Tambahkan ke gallery
+          gallery.appendChild(galleryItem);
+        };
+
+        // Baca file sebagai URL
+        reader.readAsDataURL(file);
+      }
+
+      // Reset form
+      document.getElementById('uploadForm').reset();
+      showPopup("Upload berhasil!", true);
+    });
+  </script>
+</body>
+</html>
