@@ -1,275 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hacker Uploader</title>
-  <style>
-    /* CSS untuk tema hacker dan responsif */
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #000;
-      color: #0f0;
-      margin: 0;
-      padding: 20px;
-      overflow-x: hidden;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 2em;
-      text-shadow: 0 0 5px #0f0;
-      margin-bottom: 20px;
-    }
-
-    .container {
-      max-width: 100%;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #0f0;
-      box-shadow: 0 0 10px #0f0;
-      background-color: #111;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      background-color: #222;
-      border: 1px solid #0f0;
-      color: #0f0;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-group button {
-      padding: 10px 20px;
-      background-color: #0f0;
-      border: none;
-      color: #000;
-      font-family: 'Courier New', Courier, monospace;
-      cursor: pointer;
-      font-weight: bold;
-      width: 100%;
-    }
-
-    .form-group button:hover {
-      background-color: #0c0;
-    }
-
-    #gallery {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .gallery-item {
-      border: 1px solid #0f0;
-      padding: 10px;
-      background-color: #222;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .gallery-item img,
-    .gallery-item video {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      border: 1px solid #0f0;
-    }
-
-    .gallery-item p {
-      margin: 10px 0 0;
-      font-size: 0.9em;
-      color: #0f0;
-      text-align: center;
-    }
-
-    .gallery-item p strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    /* Penglihatan Random */
-    .views {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.8em;
-      color: #0f0;
-    }
-
-    /* Popup Styling */
-    .popup {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px;
-      border-radius: 5px;
-      color: #000;
-      font-weight: bold;
-      z-index: 1000;
-      opacity: 0;
-      transform: translateX(100%);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-
-    .popup.success {
-      background-color: #0f0;
-    }
-
-    .popup.error {
-      background-color: #f00;
-    }
-
-    .popup.show {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Efek teks terminal */
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    .terminal-text {
-      animation: blink 1s infinite;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Data Mahasiswa PDDIKTI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result-count {
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .student-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .student-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .info-item {
+            margin-bottom: 5px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        .error {
+            color: #e74c3c;
+            padding: 10px;
+            background-color: #fadbd8;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Hacker Uploader <span class="terminal-text">_</span></h1>
-    <form id="uploadForm">
-      <div class="form-group">
-        <label for="name">Nama Uploader:</label>
-        <input type="text" id="name" placeholder="Masukkan nama Anda" required>
-      </div>
-      <div class="form-group">
-        <label for="date">Tanggal Upload:</label>
-        <input type="date" id="date" required>
-      </div>
-      <div class="form-group">
-        <label for="description">Deskripsi:</label>
-        <textarea id="description" placeholder="Masukkan deskripsi..." required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="fileInput">Pilih Foto/Video:</label>
-        <input type="file" id="fileInput" accept="image/*, video/*" multiple required>
-      </div>
-      <div class="form-group">
-        <button type="submit">Upload</button>
-      </div>
-    </form>
-    <div id="gallery"></div>
-  </div>
+    <div class="container">
+        <h1>Pencarian Data Mahasiswa PDDIKTI</h1>
+        
+        <div class="error" id="error-message"></div>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Masukkan nama mahasiswa..." autofocus>
+            <button id="search-button">Cari</button>
+        </div>
+        
+        <div class="result-count" id="result-count"></div>
+        
+        <div class="loading" id="loading">
+            <p>Memuat data...</p>
+        </div>
+        
+        <div id="results-container"></div>
+    </div>
 
-  <!-- Popup untuk pesan sukses/gagal -->
-  <div id="popup" class="popup"></div>
-
-  <script>
-    // Fungsi untuk menampilkan popup
-    function showPopup(message, isSuccess) {
-      const popup = document.getElementById('popup');
-      popup.textContent = message;
-      popup.className = `popup ${isSuccess ? 'success' : 'error'} show`;
-
-      // Sembunyikan popup setelah 3 detik
-      setTimeout(() => {
-        popup.classList.remove('show');
-      }, 3000);
-    }
-
-    // Fungsi untuk menghasilkan angka random antara 1000 dan 100000
-    function getRandomViews() {
-      return Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
-    }
-
-    // Tangani form upload
-    document.getElementById('uploadForm').addEventListener('submit', function (e) {
-      e.preventDefault(); // Mencegah form submit
-
-      const name = document.getElementById('name').value;
-      const date = document.getElementById('date').value;
-      const description = document.getElementById('description').value;
-      const fileInput = document.getElementById('fileInput');
-      const gallery = document.getElementById('gallery');
-
-      // Validasi input
-      if (!name || !date || !description || fileInput.files.length === 0) {
-        showPopup("Upload gagal: Semua field harus diisi!", false);
-        return;
-      }
-
-      // Tampilkan file yang diunggah
-      for (const file of fileInput.files) {
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-          const fileUrl = event.target.result;
-
-          // Buat elemen untuk menampilkan file
-          const galleryItem = document.createElement('div');
-          galleryItem.classList.add('gallery-item');
-
-          if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = fileUrl;
-            galleryItem.appendChild(img);
-          } else if (file.type.startsWith('video/')) {
-            const video = document.createElement('video');
-            video.src = fileUrl;
-            video.controls = true;
-            galleryItem.appendChild(video);
-          }
-
-          // Tambahkan informasi nama, tanggal, dan deskripsi
-          const info = document.createElement('p');
-          info.innerHTML = `<strong>${name}</strong><br>${date}<br>${description}`;
-          galleryItem.appendChild(info);
-
-          // Tambahkan penglihatan random
-          const views = document.createElement('div');
-          views.classList.add('views');
-          views.textContent = `👁️ ${getRandomViews().toLocaleString()} views`;
-          galleryItem.appendChild(views);
-
-          // Tambahkan ke gallery
-          gallery.appendChild(galleryItem);
-        };
-
-        // Baca file sebagai URL
-        reader.readAsDataURL(file);
-      }
-
-      // Reset form
-      document.getElementById('uploadForm').reset();
-      showPopup("Upload berhasil!", true);
-    });
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const resultsContainer = document.getElementById('results-container');
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error-message');
+            const resultCountElement = document.getElementById('result-count');
+            
+            // Fungsi untuk melakukan pencarian
+            function searchStudents() {
+                const name = searchInput.value.trim();
+                
+                if (name === '') {
+                    showError('Silakan masukkan nama mahasiswa');
+                    return;
+                }
+                
+                // Tampilkan loading
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                resultsContainer.innerHTML = '';
+                resultCountElement.textContent = '';
+                
+                // Konfigurasi headers
+                const headers = {
+                    'accept': 'application/json, text/plain, */*',
+                    'accept-encoding': 'gzip, deflate, br, zstd',
+                    'accept-language': 'en-US,en;q=0.9,id;q=0.8',
+                    'connection': 'keep-alive',
+                    'dnt': '1',
+                    'host': 'api-pddikti.kemdiktisaintek.go.id',
+                    'origin': 'https://pddikti.kemdiktisaintek.go.id',
+                    'referer': 'https://pddikti.kemdiktisaintek.go.id/',
+                    'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"Windows"',
+                    'sec-fetch-dest': 'empty',
+                    'sec-fetch-mode': 'cors',
+                    'sec-fetch-site': 'same-site',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+                    'x-user-ip': '62.210.95.122'
+                };
+                
+                // Membuat URL dengan parameter pencarian
+                const url = `https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/${encodeURIComponent(name)}`;
+                
+                // Lakukan fetch request
+                fetch(url, {
+                    method: 'GET',
+                    headers: headers
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingElement.style.display = 'none';
+                    
+                    if (data && data.length > 0) {
+                        displayResults(data);
+                    } else {
+                        showError('Tidak ditemukan data mahasiswa dengan nama tersebut');
+                    }
+                })
+                .catch(error => {
+                    loadingElement.style.display = 'none';
+                    showError('Terjadi kesalahan: ' + error.message);
+                    console.error('Error:', error);
+                });
+            }
+            
+            // Fungsi untuk menampilkan hasil pencarian
+            function displayResults(students) {
+                resultsContainer.innerHTML = '';
+                resultCountElement.textContent = `Ditemukan ${students.length} hasil`;
+                
+                students.forEach(student => {
+                    const card = document.createElement('div');
+                    card.className = 'student-card';
+                    
+                    const html = `
+                        <h3>${student.nama}</h3>
+                        <div class="student-info">
+                            <div class="info-item">
+                                <span class="info-label">NIM:</span> ${student.nim || '-'}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Perguruan Tinggi:</span> ${student.nama_pt || '-'}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Singkatan PT:</span> ${student.sinkatan_pt || '-'}
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Program Studi:</span> ${student.nama_prodi || '-'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    card.innerHTML = html;
+                    resultsContainer.appendChild(card);
+                });
+            }
+            
+            // Fungsi untuk menampilkan pesan error
+            function showError(message) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            
+            // Event listener untuk tombol cari
+            searchButton.addEventListener('click', searchStudents);
+            
+            // Event listener untuk enter pada input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchStudents();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
